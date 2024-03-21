@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     //
-    public function show(Article $article){
+    public function show(Article $article): ArticleResource{
         return ArticleResource::make($article);
     }
 }
