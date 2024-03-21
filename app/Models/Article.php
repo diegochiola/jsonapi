@@ -23,14 +23,14 @@ class Article extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'categoru_id' => 'integer',
+        'id' => 'string', //se modifico a string
+        'category_id' => 'integer',
         'user_id' => 'integer',
     ];
 
     public function categoru(): BelongsTo
     {
-        return $this->belongsTo(Categoru::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function user(): BelongsTo
