@@ -23,7 +23,7 @@ class Article extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id' => 'string', //se modifico a string
         'category_id' => 'integer',
         'user_id' => 'integer',
     ];
