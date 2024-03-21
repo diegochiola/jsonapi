@@ -24,13 +24,13 @@ class Article extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'categoru_id' => 'integer',
+        'category_id' => 'integer',
         'user_id' => 'integer',
     ];
 
     public function categoru(): BelongsTo
     {
-        return $this->belongsTo(Categoru::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function user(): BelongsTo
