@@ -15,7 +15,7 @@ class ListArticlesTest extends TestCase
     {
         $this->withoutExceptionHandling(); //excepciones de errores
         $article = Article::factory()->create();
-        $response = $this->getJson('/api/v1/articles/' .$article->getRouteKey())->dump();
+        $response = $this->getJson(route('api.v1.articles.show', $article));
         $response->assertExactJson([
             'data'=> [
                 'type' => 'atricles',
@@ -26,7 +26,7 @@ class ListArticlesTest extends TestCase
                     'content' => $article->content
                 ],
                 'links' => [
-                    'self' => url('api/v1/articles/'. $article->getRouteKey())
+                    'self' => route('api.v1.articles.show', $article)
                 ]
 
             ]

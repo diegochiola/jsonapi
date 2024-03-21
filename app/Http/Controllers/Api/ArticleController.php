@@ -20,7 +20,7 @@ class ArticleController extends Controller
                     'content' => $article->content
                 ],
                 'links' => [
-                    'self' => url('api/v1/articles/'. $article->getRouteKey())
+                    'self' => route('api.v1.articles.show', $article)
                 ]
 
             ]
