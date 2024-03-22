@@ -18,7 +18,7 @@ class ListArticlesTest extends TestCase
         $response = $this->getJson(route('api.v1.articles.show', $article));
         $response->assertExactJson([
             'data'=> [
-                'type' => 'atricles',
+                'type' => 'articles',
                 'id' => (string) $article->getRouteKey(),
                 'attributes' => [
                     'title' => $article->title,
@@ -33,17 +33,18 @@ class ListArticlesTest extends TestCase
         ]);
 
     }
-
+ /** @test **/
 public function can_fetch_all_articles(){
     //primero crear articulos con factori
+    $this->withoutExceptionHandling();
     $articles = Article::factory()->count(3)->create();
     $response = $this->getJson(route('api.v1.articles.index'));
     $response->assertExactJson([
         'data'=>[
             [
-                'tupe'=> 'articles',
+                'type'=> 'articles',
                 'id' => (string) $articles[0]->getRouteKey(),
-                'atributes' => [
+                'attributes' => [
                     'title' => $articles[0]->title,
                     'slug' => $articles[0]->slug,
                     'content' => $articles[0]->content,
@@ -53,9 +54,9 @@ public function can_fetch_all_articles(){
                 ]
             ],
             [
-                'tupe'=> 'articles',
+                'type'=> 'articles',
                 'id' => (string) $articles[1]->getRouteKey(),
-                'atributes' => [
+                'attributes' => [
                     'title' => $articles[1]->title,
                     'slug' => $articles[1]->slug,
                     'content' => $articles[1]->content,
@@ -65,9 +66,9 @@ public function can_fetch_all_articles(){
                 ]
             ],
             [
-                'tupe'=> 'articles',
+                'type'=> 'articles',
                 'id' => (string) $articles[2]->getRouteKey(),
-                'atributes' => [
+                'attributes' => [
                     'title' => $articles[2]->title,
                     'slug' => $articles[2]->slug,
                     'content' => $articles[2]->content,
@@ -76,7 +77,10 @@ public function can_fetch_all_articles(){
                     'self' =>route('api.v1.articles.show', $articles[2])
                 ]
             ]  
-        ]
+                ],
+                'links' => [
+                    'self' => route('api.v1.articles.index')
+                ]
     ]);
 
 }
