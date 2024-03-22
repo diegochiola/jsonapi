@@ -29,4 +29,12 @@ class ArticleResource extends JsonResource
             ]
         ];
     }
+
+    //sobreescribir metodo toResponse
+    public function toResponse($request){
+        //agregarle los header
+        return parent::toResponse($request)->withHeaders([
+            'Location' => route('api.v1.articles.show', $this->resource)
+        ]);
+    }
 }
