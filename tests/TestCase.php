@@ -1,23 +1,11 @@
 <?php
 
 namespace Tests;
-
+use Tests\MakeJsonApiRequests;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, MakesJsonApiRequests;
    
-    public function json($method, $uri, array $data = [], array $headers = [], $options = 0)
-    {
-    $headers['accept'] = 'application/vnd.api+json';
-    return parent::json($method, $uri, $data, $headers);
-
-   }
-
-   public function postJson($uri, array $data = [], array $headers = [], $options = 0){
-    $headers['content-type'] = 'application/vnd.api+json';
-    return parent::postJson($uri, $data, $headers);
-   
-   }
 }
