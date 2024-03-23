@@ -93,7 +93,7 @@ class ValidateJsonApiHeadersTest extends TestCase
     }
      /** @test **/
     public function content_type_header_must_not_be_present_in_empty_responses(){
-        Route::any('empty_response', fn() => response()->noContent()->middleware(ValidateJsonApiHeaders::class);
+        Route::any('empty_response', fn() => response()->noContent()->middleware(ValidateJsonApiHeaders::class));
 
         $this->post('empty_response',[],[
             'accept' => 'application/vnd.api+json',
