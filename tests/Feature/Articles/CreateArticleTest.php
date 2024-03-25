@@ -89,7 +89,7 @@ public function title_must_have_at_least_4_characters()
         'data' => [
             'type' => 'articles',
             'attributes' => [
-                'title' => 'Prueba', //enviamos titulo con 3 caracteres para que salte el error
+                'title' => 'TRE', //enviamos titulo con 3 caracteres para que salte el error
                 'slug' => 'nuevo-articulo',
                 'content' => 'Contenido del articulo'
             ]
@@ -108,7 +108,7 @@ public function title_must_have_at_least_4_characters()
           'data' => [
               'type' => 'articles',
               'attributes' => [
-                  
+                   // No se proporciona el campo 'sluf'
                   'title' => 'Nuevo Articulo',
                   'content' => 'Contenido del articulo'
               ]
@@ -126,7 +126,7 @@ public function title_must_have_at_least_4_characters()
           'data' => [
               'type' => 'articles',
               'attributes' => [
-                  
+                   // No se proporciona el campo 'content'
                   'title' => 'Nuevo Articulo',
                   'slug' => 'nuevo-articulo'
               ]
