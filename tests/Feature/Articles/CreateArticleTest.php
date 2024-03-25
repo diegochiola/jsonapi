@@ -6,11 +6,32 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Article;
+use Illuminate\Testing\TestResponse;
 
 class CreateArticleTest extends TestCase
 {
     use RefreshDatabase; //hace que cada vez que se ejecute un test comience con la base de datos en blanco
- /** @test **/
+ 
+protected function setUp():void{
+    parent::setUp();
+     //Macro
+     TestResponse::macro(
+        'assertJsonApiValidationErrors', 
+        function($attribute){
+            /** @var TestResponse $this */
+            $this->assertJsonStructure([
+                'errors' => [
+                    ['title', 'detail', 'source' => ['pointer']]
+                ]
+                ])->assertJsonFragment([
+                    'source' => ['pointer' => "/data/attributes/{$attribute}"]
+                ])->assertHeader(
+                    'content-type', 'application/vnd.api+json'
+                
+                )->assertStatus(422);
+        });
+}
+    /** @test **/
     public function can_create_articles()
     {
         //
@@ -65,6 +86,10 @@ class CreateArticleTest extends TestCase
              ]
          ]
      ]);
+
+    
+
+/*
      $response->assertJsonStructure([
         'errors' => [
             ['title', 'detail', 'source' => ['pointer']]
@@ -75,8 +100,9 @@ class CreateArticleTest extends TestCase
             'content-type', 'application/vnd.api+json'
         
         )->assertStatus(422);
+        */
      //comentamos la linea de abajo
-     //$response->assertJsonValidationErrors('data.attributes.title');
+     $response->assertJsonApiValidationErrors('title');
      
  }
 //test ara que el titulo tenga al menos 4 caracteres:
@@ -96,46 +122,45 @@ public function title_must_have_at_least_4_characters()
         ]
         //])->dump(); para imprimir respuesta
     ])/*->dump()   para imprimir respuesta json*/;
-    $response->assertJsonValidationErrors('data.attributes.title');
+    $response->assertJsonApiValidationErrors('title');
     
 }
-  /** @test **/
-  public function slug_is_required()
-  {
-      //
-      //$this->withoutExceptionHandling();
-      $response = $this->postJson(route('api.v1.articles.create'), [
-          'data' => [
-              'type' => 'articles',
-              'attributes' => [
-                   // No se proporciona el campo 'sluf'
-                  'title' => 'Nuevo Articulo',
-                  'content' => 'Contenido del articulo'
-              ]
-          ]
-      ]);
-      $response->assertJsonValidationErrors('data.attributes.slug');
-      
-  }
-  /** @test **/
-  public function content_is_required()
-  {
-      //
-      //$this->withoutExceptionHandling();
-      $response = $this->postJson(route('api.v1.articles.create'), [
-          'data' => [
-              'type' => 'articles',
-              'attributes' => [
-                   // No se proporciona el campo 'content'
-                  'title' => 'Nuevo Articulo',
-                  'slug' => 'nuevo-articulo'
-              ]
-          ]
-      ]);
-      //esperamos el error de validacion en el campo content
-      $response->assertJsonValidationErrors('data.attributes.content');
-      
-  }
+/** @test **/
+public function slug_is_required()
+{
+    //
+    //$this->withoutExceptionHandling();
+    $response = $this->postJson(route('api.v1.articles.create'), [
+        'data' => [
+            'type' => 'articles',
+            'attributes' => [
+                // No se proporciona el campo 'sluf'
+                'title' => 'Nuevo Articulo',
+                'content' => 'Contenido del articulo'
+            ]
+        ]
+    ]);
+    $response->assertJsonApiValidationErrors('slug');
+}
 
+/** @test **/
+public function content_is_required()
+{
+    //
+    //$this->withoutExceptionHandling();
+    $response = $this->postJson(route('api.v1.articles.create'), [
+        'data' => [
+            'type' => 'articles',
+            'attributes' => [
+                // No se proporciona el campo 'content'
+                'title' => 'Nuevo Articulo',
+                'slug' => 'nuevo-articulo'
+            ]
+        ]
+    ]);
+    //esperamos el error de validacion en el campo content
+    $response->assertJsonApiValidationErrors('content');
+    
+}
 
 }
