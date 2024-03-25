@@ -39,7 +39,14 @@ trait MakesJsonApiRequests{
             PHP_EOL.PHP_EOL.
             $e->getMessage());
         }
-       
+       try{
+
+       }catch (ExpectationFailedException $e){
+            //dd($e); //inspeccionamos para ver de que trata
+            PHPUnit::fail("Failed to find a valid JSON:API error response".  //modificar el mensaje como nos parezca mejor
+            PHP_EOL.PHP_EOL.
+            $e->getMessage());
+        }
         
         $this->assertJsonStructure([
             'errors' => [
