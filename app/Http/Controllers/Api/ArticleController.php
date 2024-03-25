@@ -34,6 +34,7 @@ class ArticleController extends Controller
             'content' => $request->input('data.attributes.content'),
         ]);
         return ArticleResource::make($article);
+        
     }
 
 }

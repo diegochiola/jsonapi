@@ -35,7 +35,8 @@ class Handler extends ExceptionHandler
         //devolver respuesta personalizada:
         //hacer las repsuestas dinamicas sino dara error:
         $title= $exception->getMessage();
-       $errors = []; //contruimos el objeto errors
+       /*
+        $errors = []; //contruimos el objeto errors
         foreach($exception->errors() as $field=> $message){
             $pointer = "/".str_replace('.', '/', $field);
             $errors []=  [
@@ -46,9 +47,20 @@ class Handler extends ExceptionHandler
                 ]
                     
                 ];
-        }
+        } */
+        //coleccionamos en lugar del foreach
+       
         return response()->json([
-            'errors' => $errors
+            'errors' => collect($exception->errors())
+            ->map(function($message, $field) use ($title){
+               return  [
+                'title' => $title,
+                'detail' => $message[0],
+                'source' => [
+                    'pointer' => "/".str_replace('.', '/', $field)
+                ]
+              ];
+            })->values()
         ],422);
     }
 }
