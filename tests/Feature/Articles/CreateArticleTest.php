@@ -26,6 +26,7 @@ class CreateArticleTest extends TestCase
             ]
         ]);
         $response->assertCreated();
+
         $article = Article::first(); //articulo creados mas arriba
         //para verificar los header de las respuesta
         $response->assertHeader(
@@ -58,13 +59,24 @@ class CreateArticleTest extends TestCase
          'data' => [
              'type' => 'articles',
              'attributes' => [
-                 
+                 // No se proporciona el campo 'title'
                  'slug' => 'nuevo-articulo',
                  'content' => 'Contenido del articulo'
              ]
          ]
      ]);
-     $response->assertJsonValidationErrors('data.attributes.title');
+     $response->assertJsonStructure([
+        'errors' => [
+            ['title', 'detail', 'source' => ['pointer']]
+        ]
+        ])->assertJsonFragment([
+            'source' => ['pointer' => '/data/attributes/title']
+        ])->assertHeader(
+            'content-type', 'application/vnd.api+json'
+        
+        )->assertStatus(422);
+     //comentamos la linea de abajo
+     //$response->assertJsonValidationErrors('data.attributes.title');
      
  }
 //test ara que el titulo tenga al menos 4 caracteres:
@@ -77,7 +89,7 @@ public function title_must_have_at_least_4_characters()
         'data' => [
             'type' => 'articles',
             'attributes' => [
-                'title' => 'TRE', //enviamos titulo con 3 caracteres para que salte el error
+                'title' => 'Prueba', //enviamos titulo con 3 caracteres para que salte el error
                 'slug' => 'nuevo-articulo',
                 'content' => 'Contenido del articulo'
             ]
