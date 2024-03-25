@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Article;
 use Illuminate\Testing\TestResponse;
+use Tests\MakesJsonApiRequests;
 
 class CreateArticleTest extends TestCase
 {
