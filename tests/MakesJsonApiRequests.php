@@ -30,7 +30,9 @@ trait MakesJsonApiRequests{
     return function ($attribute){
         /** @var TestResponse $this */
         //operador ternario 
-       $pointer =  Str::of($attribute)->startsWith('data') ? "/{$attribute}" : "/data/attributes/{$attribute}";
+       $pointer =  Str::of($attribute)->startsWith('data') 
+       ? "/".str_replace('.', '/', $attribute) 
+       : "/data/attributes/{$attribute}";
         try{
             $this->assertJsonFragment([
                 'source' => ['pointer' => $pointer] //hacerlo dinamico "/data/attributes/{$attribute}"

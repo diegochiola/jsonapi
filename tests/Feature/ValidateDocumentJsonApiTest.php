@@ -5,18 +5,17 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Testing\WithFaker;
-
 use App\Http\Middleware\ValidateJsonApiDocument;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+ 
 class ValidateDocumentJsonApiTest extends TestCase
 {
     use RefreshDatabase;
-    protected function setUp():void{
+    protected function setUp(): void
+    {
         parent::setUp();
-        /*Route::any('test_route', function(){ //el any es para hacer todos los tipos de llamados(POST/GET/ETC)
-            return 'OK';
-        })->middleware(ValidateJsonApiHeaders::class);*/
+        
         Route::any('test_route', fn() =>'OK')->middleware(ValidateJsonApiDocument::class);
     }
 
@@ -46,4 +45,63 @@ class ValidateDocumentJsonApiTest extends TestCase
         ])
         ->assertJsonApiValidationErrors('data');
     }
+/** @test **/
+    public function data_type_is_required(): void
+    {
+        //para peticiones post
+        $this->postJson('test_route',[
+            'data' => [
+                'attributes' => []
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+
+        //para peticiones patch
+        $this->patchJson('test_route',[
+            'data' => [
+                'attributes' => []
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+    }
+
+/** @test **/
+    public function data_type_is_required(): void
+    {
+        //para peticiones post
+        $this->postJson('test_route',[
+            'data' => [
+                'attributes' => []
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+
+        //para peticiones patch
+        $this->patchJson('test_route',[
+            'data' => [
+                'attributes' => []
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+    }
+    /** @test **/
+    public function data_type_must_be_a_string(): void
+    {
+        //para peticiones post
+        $this->postJson('test_route',[
+            'data' => [
+                'type' => 1
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+
+        //para peticiones patch
+        $this->patchJson('test_route',[
+            'data' => [
+                'type' => 1
+            ]
+        ])
+        ->assertJsonApiValidationErrors('data.type');
+    }
+
 }
