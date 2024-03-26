@@ -6,9 +6,19 @@ use Illuminate\Http\JsonResponse;
 
 class JsonApiValidationErrorResponse extends JsonResponse{
 
-public function __contruct(ValidationException $exception){
+public function __contruct(ValidationException $exception, $status = 422){
+   
+    $data = $this->formatJsonApiErrors($exception);
+    $headers = [
+        'content-type' => 'application/vnd.api+json'
+    ];
+    
+    parent::__construct($data, $status, $headers);
+}
+
+protected function formatJsonApiErrors(ValidationException $exception) : array{
     $title= $exception->getMessage();
-    $data = [
+    return[
         'errors' => collect($exception->errors())
         ->map(function($message, $field) use ($title){
            
@@ -21,14 +31,7 @@ public function __contruct(ValidationException $exception){
           ];
         })->values()
     ]; 
-    $headers = [
-        'content-type' => 'application/vnd.api+json'
-    ];
-    
-    parent::__construct($data, 422, $headers);
 }
-
-
 
 
 
