@@ -16,6 +16,8 @@ class CreateArticleTest extends TestCase
 protected function setUp():void{
     parent::setUp();
      //Macro
+     $this->formatJsonApiDocument = false;
+     
      TestResponse::macro(
         'assertJsonApiValidationErrors', 
         function($attribute){

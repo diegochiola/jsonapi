@@ -8,15 +8,26 @@ use \PHPUnit\Framework\ExpectationFailedException;
 use Illuminate\Support\Str;
 
 trait MakesJsonApiRequests{
+   protected bool $formatJsonApiDocument = true;
    
+  // me falta agregar protected function setUp():void{
+
+  
+  
+  public function withouJsonApiDocumentFormatting(){
+    $this->formatJsonApiDocument = false;
+  }
+
     public function json($method, $uri, array $data = [], array $headers = [], $options = 0) : \Illuminate\Testing\TestResponse
     {
     $headers['accept'] = 'application/vnd.api+json';
-    $formattedData['data']['attributes']= $data;
-    $formattedData['data']['type'] = (string)Str::of($uri)->after('api/v1');
-
-    return parent::json($method, $uri,$formattedData, $headers);
-
+    //deshabilitar y habilitar esta construccion
+    if($this->formatApiDocument){
+        $formattedData['data']['attributes']= $data;
+        $formattedData['data']['type'] = (string)Str::of($uri)->after('api/v1');
+    }
+    return parent::json($method, $uri,$formattedData ?? $data, $headers);
+//$formattedData ?? $data imprime la variable de la izq si esta definida y sino la de la derecha
    }
 
    public function postJson($uri, array $data = [], array $headers = [], $options = 0): \Illuminate\Testing\TestResponse{
