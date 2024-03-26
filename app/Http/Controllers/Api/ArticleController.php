@@ -20,7 +20,7 @@ class ArticleController extends Controller
         return ArticleCollection::make(Article::all()); //cada uno de los articulos se envuela
 
     }
-    public function create(Request $request){
+    public function store(Request $request){
         //validación:
         $request->validate([
             'data.attributes.title' => ['required', 'min:4'],//agregamos que debe tener 4 caracteres

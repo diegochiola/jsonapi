@@ -28,10 +28,11 @@ trait MakesJsonApiRequests{
    protected function assertJsonApiValidationErrors(): Closure {
     return function ($attribute){
         /** @var TestResponse $this */
-        
+        //operador ternario 
+       $pointer =  Str::of($attribute)->startsWith('data') ? "/{$attribute}" : "/data/attributes/{$attribute}";
         try{
             $this->assertJsonFragment([
-                'source' => ['pointer' => "/data/attributes/{$attribute}"]
+                'source' => ['pointer' => $pointer] //hacerlo dinamico "/data/attributes/{$attribute}"
             ]);
         }catch (ExpectationFailedException $e){
             //dd($e); //inspeccionamos para ver de que trata
