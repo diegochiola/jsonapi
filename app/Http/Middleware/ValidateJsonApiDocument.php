@@ -12,7 +12,7 @@ class ValidateJsonapiDocument
     public function handle(Request $request, Closure $next): Response
     {
         //verificaion que si el metodo es post
-        if($request->isMethod('POST' || $request->isMethod('PATCH'))){
+        if($request->isMethod('POST') || $request->isMethod('PATCH')){
             $request->validate([
                 'data' => ['required']
             ]);

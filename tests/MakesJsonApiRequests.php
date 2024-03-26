@@ -5,6 +5,7 @@ namespace Tests;
 use Closure;
 use PHPUnit\Framework\Assert as PHPUnit;
 use \PHPUnit\Framework\ExpectationFailedException;
+use Illuminate\Support\Str;
 
 trait MakesJsonApiRequests{
    

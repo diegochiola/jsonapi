@@ -53,7 +53,8 @@ class Handler extends ExceptionHandler
         return response()->json([
             'errors' => collect($exception->errors())
             ->map(function($message, $field) use ($title){
-               return  [
+               
+                return  [
                 'title' => $title,
                 'detail' => $message[0],
                 'source' => [
