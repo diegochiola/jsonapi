@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ValidateJsonapiDocument
+class ValidateJsonApiDocument
 {
 
     public function handle(Request $request, Closure $next): Response
@@ -14,7 +14,7 @@ class ValidateJsonapiDocument
         //verificaion que si el metodo es post
         if($request->isMethod('POST') || $request->isMethod('PATCH')){
             $request->validate([
-                'data' => ['required']
+                'data' => ['required', 'array']
             ]);
         }
         return $next($request);

@@ -31,4 +31,19 @@ class ValidateDocumentJsonApiTest extends TestCase
         $this->patchJson('test_route',[])
         ->assertJsonApiValidationErrors('data');
     }
+    /** @test **/
+    public function data_must_be_an_array(): void
+    {
+        //para peticiones post
+        $this->postJson('test_route',[
+            'data' => 'string'
+        ])
+        ->assertJsonApiValidationErrors('data');
+
+        //para peticiones patch
+        $this->patchJson('test_route',[
+            'data' => 'string'
+        ])
+        ->assertJsonApiValidationErrors('data');
+    }
 }
