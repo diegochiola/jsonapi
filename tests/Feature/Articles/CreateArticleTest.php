@@ -36,18 +36,14 @@ protected function setUp():void{
     public function can_create_articles()
     {
         //
-        $this->withoutExceptionHandling();
-        $response = $this->postJson(route('api.v1.articles.store'), [
-            'data' => [
-                'type' => 'articles',
-                'attributes' => [
+        //$this->withoutExceptionHandling();
+        $response = $this->postJson(route('api.v1.articles.store'), [ 
                     'title' =>'Nuevo articulo',
                     'slug' => 'nuevo-articulo',
                     'content' => 'Contenido del articulo'
-                ]
-            ]
-        ]);
-        $response->assertCreated();
+               
+            
+        ])->assertCreated();
 
         $article = Article::first(); //articulo creados mas arriba
         //para verificar los header de las respuesta
@@ -77,16 +73,11 @@ protected function setUp():void{
  {
      //
      //$this->withoutExceptionHandling();
-     $response = $this->postJson(route('api.v1.articles.store'), [
-         'data' => [
-             'type' => 'articles',
-             'attributes' => [
+     $this->postJson(route('api.v1.articles.store'), [
                  // No se proporciona el campo 'title'
                  'slug' => 'nuevo-articulo',
-                 'content' => 'Contenido del articulo'
-             ]
-         ]
-     ]);
+                 'content' => 'Contenido del articulo'   
+     ])->assertJsonApiValidationErrors('title');
 
     
 
@@ -103,7 +94,7 @@ protected function setUp():void{
         )->assertStatus(422);
         */
      //comentamos la linea de abajo
-     $response->assertJsonApiValidationErrors('title');
+     //$response->assertJsonApiValidationErrors('title');
      
  }
 //test ara que el titulo tenga al menos 4 caracteres:
@@ -113,35 +104,28 @@ public function title_must_have_at_least_4_characters()
     //
     //$this->withoutExceptionHandling();
     $response = $this->postJson(route('api.v1.articles.store'), [
-        'data' => [
-            'type' => 'articles',
-            'attributes' => [
+        
                 'title' => 'TRE', //enviamos titulo con 3 caracteres para que salte el error
                 'slug' => 'nuevo-articulo',
                 'content' => 'Contenido del articulo'
-            ]
-        ]
+        
         //])->dump(); para imprimir respuesta
-    ])/*->dump()   para imprimir respuesta json*/;
-    $response->assertJsonApiValidationErrors('title');
+    ])->assertJsonApiValidationErrors('title');        /*->dump()   para imprimir respuesta json*/;
+    //$response->assertJsonApiValidationErrors('title');
     
 }
 /** @test **/
 public function slug_is_required()
 {
-    //
     //$this->withoutExceptionHandling();
     $response = $this->postJson(route('api.v1.articles.store'), [
-        'data' => [
-            'type' => 'articles',
-            'attributes' => [
+        
                 // No se proporciona el campo 'sluf'
                 'title' => 'Nuevo Articulo',
                 'content' => 'Contenido del articulo'
-            ]
-        ]
-    ]);
-    $response->assertJsonApiValidationErrors('slug');
+        
+    ])->assertJsonApiValidationErrors('slug');
+    //$response->assertJsonApiValidationErrors('slug');
 }
 
 /** @test **/
@@ -150,17 +134,12 @@ public function content_is_required()
     //
     //$this->withoutExceptionHandling();
     $response = $this->postJson(route('api.v1.articles.store'), [
-        'data' => [
-            'type' => 'articles',
-            'attributes' => [
                 // No se proporciona el campo 'content'
                 'title' => 'Nuevo Articulo',
                 'slug' => 'nuevo-articulo'
-            ]
-        ]
-    ]);
+    ])->assertJsonApiValidationErrors('content');
     //esperamos el error de validacion en el campo content
-    $response->assertJsonApiValidationErrors('content');
+    //$response->assertJsonApiValidationErrors('content');
     
 }
 

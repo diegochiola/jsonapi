@@ -12,7 +12,10 @@ trait MakesJsonApiRequests{
     public function json($method, $uri, array $data = [], array $headers = [], $options = 0) : \Illuminate\Testing\TestResponse
     {
     $headers['accept'] = 'application/vnd.api+json';
-    return parent::json($method, $uri, $data, $headers);
+    $formattedData['data']['attributes']= $data;
+    $formattedData['data']['type'] = (string)Str::of($uri)->after('api/v1');
+
+    return parent::json($method, $uri,$formattedData, $headers);
 
    }
 
